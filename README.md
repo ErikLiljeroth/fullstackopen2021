@@ -2,7 +2,7 @@
 
 * part0 ☑
 * part1 ☑
-* part2 ☐
+* part2 ☑
 * part3 ☐
 * part4 ☐
 * part5 ☐
@@ -12,4 +12,3 @@
 * part9 ☐
 * part10 ☐
 * part11 ☐
-
