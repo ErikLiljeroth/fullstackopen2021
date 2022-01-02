@@ -54,7 +54,13 @@ const App = () => {
             setTimeout(() => (setNotificationMessage(null)), 4000)
           })
           .catch(error => {
-            setErrorMessage(`The person ${existingPerson.name} has already been deleted from server`)
+            // Error handling updated according to part3 of the Fullstackopen-course, exercise 3.20.
+            // If there is something in error.response.data, then display it, otherwise show a defeault error.
+            if (!(Object.entries(error.response.data).length === 0 && error.response.data.constructor === Object)) {
+              setErrorMessage(JSON.stringify(error.response.data))
+            } else {
+              setErrorMessage(`Failed to update the number of ${existingPerson.name}`)
+            }
             setTimeout(() => setErrorMessage(null), 4000)
             setPersons(persons.filter(p => p.id !== personObject.id))
           })
@@ -63,10 +69,17 @@ const App = () => {
     } else {
       personService
         .create(personObject)
-        .then(response => personObject.id = response.data.id)
-      setPersons(persons.concat(personObject))
-      setNotificationMessage(`Added ${personObject.name}`)
-      setTimeout(() => (setNotificationMessage(null)), 4000)
+        .then(response => {
+          personObject.id = response.data.id
+          setPersons(persons.concat(personObject))
+          setNotificationMessage(`Added ${personObject.name}`)
+          setTimeout(() => (setNotificationMessage(null)), 4000)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setErrorMessage(JSON.stringify(error.response.data))
+          setTimeout(() => setErrorMessage(null), 4000)
+        })
     }
   }
 
